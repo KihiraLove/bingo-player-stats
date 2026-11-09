@@ -40,9 +40,10 @@ The consent choice itself is stored separately so the banner does not need to be
 
 ## Run locally
 
-No build step or backend is required.
+Fetch the shared toolkit submodule before running the static server.
 
 ```bash
+git submodule update --init
 python -m http.server 8000
 ```
 

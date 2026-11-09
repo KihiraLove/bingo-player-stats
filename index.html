@@ -5,34 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Bulk OSRS player statistics lookup for bingo organisers.">
   <title>Bingo Player Stats</title>
-  <link rel="stylesheet" href="./styles.css?v=20261007-kofi2">
+  <link rel="stylesheet" href="./toolkit-common/toolkit.css">
+  <link rel="stylesheet" href="./styles.css?v=toolkit">
 </head>
 <body>
-  <main class="page-shell">
-    <header class="hero">
-      <div>
-        <p class="eyebrow">OSRS TOOL FOR BINGOS</p>
-        <h1>Player Stats</h1>
-        <p class="lede">Paste your roster, fetch public OSRS stats, then copy the result straight into Excel or Google Sheets.</p>
-      </div>
+  <header id="toolkit-header">
+    <div class="hero">
+      <p class="eyebrow">OSRS TOOL FOR BINGOS</p>
+      <h1>Player Stats</h1>
+      <p class="lede">Paste your roster, fetch public OSRS stats, then copy the result straight into Excel or Google Sheets.</p>
+    </div>
+  </header>
 
-      <a
-        class="kofi-banner"
-        href="https://ko-fi.com/KihiraLove"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Support KihiraLove on Ko-fi"
-      >
-        <img
-          src="https://storage.ko-fi.com/cdn/cup-border.png"
-          alt=""
-          aria-hidden="true"
-          width="24"
-          height="24"
-        >
-        <span class="kofi-banner-label">Support me on Ko-fi</span>
-      </a>
-    </header>
+  <main id="main" class="page-shell">
 
     <section class="panel input-panel" aria-labelledby="players-heading">
       <div class="section-heading">
@@ -148,18 +133,15 @@
 
       <p class="table-help">Tip: copy uses tab-separated values, pasting into Excel or Google Sheets fills cells automatically.</p>
     </section>
-
-    <footer>
-      <div class="footer-meta">
-        <p><strong>Primary source:</strong> OSRS HiScores · <strong>Secondary source:</strong> TempleOSRS</p>
-        <p>All player data is public. No data is stored, collected, or sold by this site.</p>
-      </div>
-      <div class="footer-actions">
-        <a class="text-button" href="https://github.com/KihiraLove/BingoPlayerStats" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <button id="cookie-settings" class="text-button" type="button">Cookie settings</button>
-      </div>
-    </footer>
   </main>
+
+  <footer id="toolkit-footer">
+    <div class="toolkit-footer-info">
+      <p><strong>Primary source:</strong> OSRS HiScores · <strong>Secondary source:</strong> TempleOSRS</p>
+      <p>All player data is public. This site does not store, collect, or sell player data.</p>
+    </div>
+    <button id="cookie-settings" type="button">Cookie settings</button>
+  </footer>
 
   <aside id="cookie-consent" class="cookie-banner" role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-description">
     <div>

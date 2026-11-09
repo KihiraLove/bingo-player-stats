@@ -1,3 +1,4 @@
+import { mountToolkitHeader, mountToolkitFooter } from "../toolkit-common/toolkit.mjs";
 import {
   classifyFromHiscores,
   fetchHiscore,
@@ -50,6 +51,12 @@ const els = {
   cookieDecline: document.querySelector("#cookie-decline"),
   cookieSettings: document.querySelector("#cookie-settings")
 };
+
+mountToolkitHeader(document.querySelector("#toolkit-header"));
+mountToolkitFooter(document.querySelector("#toolkit-footer"), {
+  githubUrl: "https://github.com/KihiraLove/bingo-player-stats",
+  cookieSettings: els.cookieSettings
+});
 
 const state = {
   results: [],
