@@ -6,8 +6,8 @@
   <meta name="description" content="Bulk OSRS player statistics lookup for bingo organisers.">
   <title>Bingo Player Stats</title>
   <link rel="icon" type="image/png" href="./assets/security-book.png">
-  <link rel="stylesheet" href="./toolkit-common/toolkit.css">
-  <link rel="stylesheet" href="./styles.css?v=security-book">
+  <link rel="stylesheet" href="./toolkit-common/toolkit.css?v=shared-cookies">
+  <link rel="stylesheet" href="./styles.css?v=shared-cookies">
 </head>
 <body>
   <header id="toolkit-header">
@@ -144,20 +144,8 @@
       <p><strong>Primary source:</strong> OSRS HiScores · <strong>Secondary source:</strong> TempleOSRS</p>
       <p>All player data is public. This site does not store, collect, or sell player data.</p>
     </div>
-    <button id="cookie-settings" type="button">Cookie settings</button>
   </footer>
 
-  <aside id="cookie-consent" class="cookie-banner" role="dialog" aria-labelledby="cookie-title" aria-describedby="cookie-description">
-    <div>
-      <strong id="cookie-title">Cookie consent</strong>
-      <p id="cookie-description">This site saves your configuration in a cookie so your selected customisations are restored next time you visit us. It does not store usernames or player stats. We do not collect or sell any data. A small consent cookie remembers this choice.</p>
-    </div>
-    <div class="cookie-actions">
-      <button id="cookie-accept" class="primary" type="button">Accept config cookies</button>
-      <button id="cookie-decline" class="secondary" type="button">Decline</button>
-    </div>
-  </aside>
-
-  <script type="module" src="./src/app.js"></script>
+  <script type="module" src="./src/app.js?v=shared-cookies"></script>
 </body>
 </html>

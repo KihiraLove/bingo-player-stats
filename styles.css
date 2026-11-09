@@ -390,46 +390,6 @@ tr:hover td:first-child { background-color: #211d16; }
   font-size: 0.82rem;
 }
 
-.cookie-banner {
-  position: fixed;
-  left: calc(50% + var(--toolkit-page-inset) / 2);
-  bottom: 18px;
-  z-index: 20;
-  width: min(900px, calc(100% - var(--toolkit-page-inset) - 28px));
-  transition: left var(--toolkit-slide), width var(--toolkit-slide);
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  border: 1px solid var(--accent);
-  background: #1b1914;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-  padding: 16px 18px;
-}
-
-.cookie-banner[hidden] {
-  display: none !important;
-}
-
-.cookie-banner strong {
-  color: var(--accent-strong);
-  font-size: 0.95rem;
-}
-
-.cookie-banner p {
-  margin: 5px 0 0;
-  color: var(--muted);
-  font-size: 0.84rem;
-  line-height: 1.45;
-}
-
-.cookie-actions {
-  display: flex;
-  flex: 0 0 auto;
-  gap: 8px;
-}
-
 @container toolkit-page (max-width: 900px) {
   .stat-groups { grid-template-columns: 1fr; }
 }
@@ -441,17 +401,12 @@ tr:hover td:first-child { background-color: #211d16; }
   .regular-option { width: 100%; margin: 0; }
   .results-heading { padding: 0 14px; }
   .toolbar, .table-help { padding-left: 14px; padding-right: 14px; }
-  .cookie-banner { align-items: stretch; flex-direction: column; }
-  .cookie-actions { width: 100%; }
-  .cookie-actions button { flex: 1 1 0; }
 }
 
 @container toolkit-page (max-width: 760px) {
   .regular-options { position: relative; }
   .tooltip-target { position: static; }
   .tooltip-target::after { width: 100%; }
-  .cookie-actions { flex-wrap: wrap; }
-  .cookie-actions button { flex-basis: auto; }
 }
 
 .result-link {

@@ -1,3 +1,4 @@
+import { mountToolkitCookiePreferences } from "../toolkit-common/cookies.mjs";
 import { mountToolkitHeader, mountToolkitFooter } from "../toolkit-common/toolkit.mjs";
 import {
   classifyFromHiscores,
@@ -22,7 +23,6 @@ import { parseUsernames } from "./utils.js";
 const CONSENT_COOKIE = "bps_cookie_consent";
 const CONFIG_COOKIE = "bps_output_config";
 const CONFIG_VERSION = 1;
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 const LINK_COLUMN_SET = new Set(SELECTABLE_LINK_COLUMNS);
 
 const els = {
@@ -45,23 +45,14 @@ const els = {
   resultSummary: document.querySelector("#result-summary"),
   table: document.querySelector("#results-table"),
   copyAll: document.querySelector("#copy-all"),
-  downloadAll: document.querySelector("#download-all"),
-  cookieBanner: document.querySelector("#cookie-consent"),
-  cookieAccept: document.querySelector("#cookie-accept"),
-  cookieDecline: document.querySelector("#cookie-decline"),
-  cookieSettings: document.querySelector("#cookie-settings")
+  downloadAll: document.querySelector("#download-all")
 };
 
 mountToolkitHeader(document.querySelector("#toolkit-header"));
-mountToolkitFooter(document.querySelector("#toolkit-footer"), {
-  githubUrl: "https://github.com/KihiraLove/bingo-player-stats",
-  cookieSettings: els.cookieSettings
-});
 
 const state = {
   results: [],
-  running: false,
-  cookieConsent: null
+  running: false
 };
 
 function setNotice(message = "", level = "info") {
@@ -230,33 +221,6 @@ function displayedColumns() {
   return [...VIEW_COLUMNS, ...links, ...stats];
 }
 
-function readCookie(name) {
-  const prefix = encodeURIComponent(name) + "=";
-  const entry = document.cookie
-    .split(";")
-    .map((part) => part.trim())
-    .find((part) => part.startsWith(prefix));
-
-  return entry ? decodeURIComponent(entry.slice(prefix.length)) : null;
-}
-
-function writeCookie(name, value, maxAge = COOKIE_MAX_AGE) {
-  let cookie =
-    encodeURIComponent(name) +
-    "=" +
-    encodeURIComponent(value) +
-    "; Path=/; Max-Age=" +
-    maxAge +
-    "; SameSite=Lax";
-
-  if (location.protocol === "https:") cookie += "; Secure";
-  document.cookie = cookie;
-}
-
-function deleteCookie(name) {
-  writeCookie(name, "", 0);
-}
-
 function currentPreferences() {
   const checked = new Set(
     Array.from(els.statGroups.querySelectorAll("input[data-stat-column]:checked"))
@@ -312,42 +276,6 @@ function applyPreferences(preferences) {
 
   els.customOptions.hidden = !els.customizeEnabled.checked;
   updateGroupToggles();
-}
-
-function persistPreferences() {
-  if (state.cookieConsent !== "accepted") return;
-  writeCookie(CONFIG_COOKIE, JSON.stringify(currentPreferences()));
-}
-
-function loadCookiePreferences() {
-  state.cookieConsent = readCookie(CONSENT_COOKIE);
-
-  if (state.cookieConsent === "accepted") {
-    const saved = readCookie(CONFIG_COOKIE);
-    if (saved) {
-      try {
-        applyPreferences(JSON.parse(saved));
-      } catch (_error) {
-        deleteCookie(CONFIG_COOKIE);
-      }
-    }
-  }
-
-  els.cookieBanner.hidden = state.cookieConsent === "accepted" || state.cookieConsent === "declined";
-}
-
-function acceptCookies() {
-  state.cookieConsent = "accepted";
-  writeCookie(CONSENT_COOKIE, "accepted");
-  persistPreferences();
-  els.cookieBanner.hidden = true;
-}
-
-function declineCookies() {
-  state.cookieConsent = "declined";
-  writeCookie(CONSENT_COOKIE, "declined");
-  deleteCookie(CONFIG_COOKIE);
-  els.cookieBanner.hidden = true;
 }
 
 async function lookupPlayer(username) {
@@ -595,12 +523,22 @@ async function handleFetch() {
 
 function handlePreferenceChange() {
   els.customOptions.hidden = !els.customizeEnabled.checked;
-  persistPreferences();
+  preferences.save();
   renderTable();
 }
 
 renderStatOptions();
-loadCookiePreferences();
+const preferences = mountToolkitCookiePreferences({
+  consentCookie: CONSENT_COOKIE,
+  configCookie: CONFIG_COOKIE,
+  description: "This site saves your configuration in a cookie so your selected customisations are restored next time you visit us. It does not store usernames or player stats. We do not collect or sell any data. A small consent cookie remembers this choice.",
+  getConfig: currentPreferences
+});
+applyPreferences(preferences.config);
+mountToolkitFooter(document.querySelector("#toolkit-footer"), {
+  githubUrl: "https://github.com/KihiraLove/bingo-player-stats",
+  cookieSettings: preferences.settingsButton
+});
 updatePlayerCount();
 
 els.usernames.addEventListener("input", updatePlayerCount);
@@ -632,14 +570,14 @@ els.statGroups.addEventListener("change", (event) => {
     }
 
     updateGroupToggles();
-    persistPreferences();
+    preferences.save();
     renderTable();
     return;
   }
 
   if (event.target.dataset.statColumn) {
     updateGroupToggles();
-    persistPreferences();
+    preferences.save();
     renderTable();
     return;
   }
@@ -659,10 +597,4 @@ els.downloadAll.addEventListener("click", () => {
     toCsv(rowsForColumns(columns)),
     "text/csv;charset=utf-8"
   );
-});
-
-els.cookieAccept.addEventListener("click", acceptCookies);
-els.cookieDecline.addEventListener("click", declineCookies);
-els.cookieSettings.addEventListener("click", () => {
-  els.cookieBanner.hidden = false;
 });
