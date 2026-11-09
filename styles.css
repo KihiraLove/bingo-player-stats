@@ -4,6 +4,9 @@ button:disabled { cursor: wait; opacity: 0.65; }
 
 .hero { padding: 0 4px 24px; }
 
+.hero-title { display: flex; align-items: center; gap: 12px; }
+.hero-title img { flex: none; object-fit: contain; image-rendering: pixelated; }
+
 .eyebrow {
   margin: 0 0 6px;
   color: var(--accent);

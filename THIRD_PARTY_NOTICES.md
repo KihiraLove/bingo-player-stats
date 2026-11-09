@@ -12,4 +12,6 @@ Old School RuneScape and RuneScape are trademarks of Jagex Ltd. This is an unoff
 
 ## Old School RuneScape Wiki
 
+The [Security book](https://oldschool.runescape.wiki/w/Security_book) item sprite is included as a local image. The game artwork belongs to Jagex.
+
 The application uses the OSRS Wiki CORS proxy to access Jagex's public HiScores endpoint from a static browser application.
