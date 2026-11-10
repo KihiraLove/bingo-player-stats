@@ -3,9 +3,10 @@ import { REAL_SKILLS } from "./vendor/wom/types.js";
 import {
   activityColumnName,
   bossColumnName,
+  FRACTURED_ARCHIVE_BOSS,
   SELECTABLE_STAT_COLUMNS,
   skillLabel
-} from "./stat-catalog.js";
+} from "./stat-catalog.js?v=fractured-archive";
 import {
   canonicalBossName,
   normalizeName,
@@ -14,6 +15,8 @@ import {
   toNumber,
   xpToLevel
 } from "./utils.js";
+
+const TEMPLE_BOSSES = new Set([...knownBosses, canonicalBossName(FRACTURED_ARCHIVE_BOSS)]);
 
 export const EXPORT_SUMMARY_COLUMNS = [
   "Username",
@@ -190,7 +193,7 @@ function buildTempleRaw(stats) {
     if (!Number.isFinite(number) || number < 0) continue;
 
     const canonical = canonicalBossName(key);
-    if (knownBosses.includes(canonical)) {
+    if (TEMPLE_BOSSES.has(canonical)) {
       raw[bossColumnName(canonical)] = number;
     }
   }

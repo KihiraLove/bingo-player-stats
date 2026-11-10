@@ -11,18 +11,23 @@ import {
   makeErrorResult,
   outputValue,
   VIEW_COLUMNS
-} from "./metrics.js";
+} from "./metrics.js?v=fractured-archive";
 import {
+  activityColumnName,
+  FRACTURED_ARCHIVE_BOSS,
   SELECTABLE_LINK_COLUMNS,
   SELECTABLE_STAT_COLUMNS,
   SKILL_STAT_ROWS,
   STAT_GROUPS
-} from "./stat-catalog.js";
+} from "./stat-catalog.js?v=fractured-archive";
 import { parseUsernames } from "./utils.js";
 
 const CONSENT_COOKIE = "bps_cookie_consent";
 const CONFIG_COOKIE = "bps_output_config";
 const CONFIG_VERSION = 1;
+const ARCHIVE_COLUMN = activityColumnName(FRACTURED_ARCHIVE_BOSS);
+// Append new cookie positions so older selections keep their original columns.
+const PREFERENCE_STAT_COLUMNS = SELECTABLE_STAT_COLUMNS.filter((column) => column !== ARCHIVE_COLUMN).concat(ARCHIVE_COLUMN);
 const LINK_COLUMN_SET = new Set(SELECTABLE_LINK_COLUMNS);
 
 const els = {
@@ -231,7 +236,7 @@ function currentPreferences() {
     v: CONFIG_VERSION,
     c: els.customizeEnabled.checked ? 1 : 0,
     s: els.useSpecial.checked ? 1 : 0,
-    b: SELECTABLE_STAT_COLUMNS.map((column) => checked.has(column) ? "1" : "0").join(""),
+    b: PREFERENCE_STAT_COLUMNS.map((column) => checked.has(column) ? "1" : "0").join(""),
     l: [
       els.includeHiscoresLink.checked,
       els.includeTempleLink.checked,
@@ -252,12 +257,15 @@ function applyPreferences(preferences) {
         .map((input) => [input.dataset.statColumn, input])
     );
 
-    SELECTABLE_STAT_COLUMNS.forEach((column, index) => {
+    PREFERENCE_STAT_COLUMNS.forEach((column, index) => {
       const input = inputs.get(column);
       if (input && index < preferences.b.length) {
         input.checked = preferences.b[index] !== "0";
       }
     });
+    if (preferences.c === 1 && preferences.b.length < PREFERENCE_STAT_COLUMNS.length) {
+      inputs.get(ARCHIVE_COLUMN).checked = false;
+    }
   }
 
   if (typeof preferences.l === "string") {

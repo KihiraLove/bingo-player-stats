@@ -36,6 +36,8 @@ export const HISCORE_ACTIVITIES = [
   "Collections Logged"
 ];
 
+export const FRACTURED_ARCHIVE_BOSS = "The Fractured Archive";
+
 export const HISCORE_BOSSES = [
   "Abyssal Sire",
   "Alchemical Hydra",
@@ -95,6 +97,7 @@ export const HISCORE_BOSSES = [
   "The Whisperer",
   "Theatre of Blood",
   "Theatre of Blood: Hard Mode",
+  FRACTURED_ARCHIVE_BOSS,
   "Thermonuclear Smoke Devil",
   "Tombs of Amascut",
   "Tombs of Amascut: Expert Mode",

@@ -5,7 +5,9 @@ import { algorithms } from "../src/vendor/wom/index.js";
 import { hasProgressedBeyondSnapshot } from "../src/data.js";
 import {
   activityColumnName,
-  isOmittedActivity
+  isOmittedActivity,
+  SELECTABLE_STAT_COLUMNS,
+  STAT_GROUPS
 } from "../src/stat-catalog.js";
 import {
   deriveTempleGamemode,
@@ -15,6 +17,7 @@ import {
 } from "../src/utils.js";
 import {
   buildPlayerLinks,
+  computeHiscoreResult,
   computeTempleResult,
   outputValue
 } from "../src/metrics.js";
@@ -108,6 +111,20 @@ test("activity headings use requested score/KC semantics", () => {
   assert.equal(activityColumnName("Barrows Chests"), "Barrows Chests");
   assert.equal(activityColumnName("Zulrah"), "Zulrah KC");
   assert.equal(activityColumnName("Soul Wars Zeal"), "Soul Wars Zeal");
+});
+
+test("The Fractured Archive is a selectable boss with kill counts from both sources", () => {
+  const name = "The Fractured Archive";
+  const column = name + " KC";
+  assert.ok(STAT_GROUPS.find((group) => group.id === "bosses").columns.includes(column));
+  assert.ok(SELECTABLE_STAT_COLUMNS.includes(column));
+
+  const hiscore = computeHiscoreResult("Example", {
+    skills: {}, activities: { the_fractured_archive: { name, score: 42 } }
+  }, { mode: "main" });
+  const temple = computeTempleResult("Example", { stats: { [name]: 37 } });
+  assert.equal(outputValue(hiscore, column), 42);
+  assert.equal(outputValue(temple, column), 37);
 });
 
 test("league and grid points are omitted", () => {
