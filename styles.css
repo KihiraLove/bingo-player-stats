@@ -16,7 +16,6 @@ button:disabled { cursor: wait; opacity: 0.65; }
 }
 
 .lede {
-  max-width: 720px;
   margin: 16px 0 0;
   color: var(--muted);
   font-size: 1.05rem;
